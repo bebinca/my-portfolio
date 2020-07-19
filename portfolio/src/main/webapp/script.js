@@ -34,3 +34,19 @@ function getHelloUsingArrowFunctions() {
   });
 }
 
+function getMessages() {
+    fetch('/data').then(response => response.json()).then((stats) => {
+        console.log(stats.messages);
+        const statsListElement = document.getElementById('messages-container');
+        statsListElement.innerHTML = '';
+        statsListElement.appendChild(
+        createListElement(stats));
+    });
+}
+
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
