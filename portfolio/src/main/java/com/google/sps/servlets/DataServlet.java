@@ -25,6 +25,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -33,10 +37,18 @@ import com.google.appengine.api.datastore.Entity;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    private List<String> messages = new ArrayList<>();
+    private List<String> messages;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    messages = new ArrayList<>();
+    Query query = new Query("comment").addSort("time", SortDirection.DESCENDING);;
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+        for (Entity entity : results.asIterable()) {
+            String comment = (String)entity.getProperty("text");
+            messages.add(comment);
+        }
     response.setContentType("application/json;");
     String json = convertToJsonUsingGson(messages);
     response.getWriter().println(json);
@@ -45,10 +57,11 @@ public class DataServlet extends HttpServlet {
     @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String newComment = getComment(request);
-      messages.add(newComment);
+      long timestamp = System.currentTimeMillis();
 
       Entity commentEntity = new Entity("comment");
       commentEntity.setProperty("text",newComment);
+      commentEntity.setProperty("time", timestamp);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);
