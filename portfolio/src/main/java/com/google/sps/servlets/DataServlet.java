@@ -29,24 +29,25 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    private List<String> messages;
-    @Override
-    public void init() {
-        messages = new ArrayList<>();
-        messages.add("Turns out, real life is a little bit more complicated than a slogan on a bumper stiker");
-        messages.add("Real life is messy, and we all have limitations, we all make mistakes");
-        messages.add("Which means, hey, glass half full, we all have a lot in common");
-    }
+    private List<String> messages = new ArrayList<>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    init();
-      
-    String json = convertToJsonUsingGson(messages);
-
     response.setContentType("application/json;");
+    String json = convertToJsonUsingGson(messages);
     response.getWriter().println(json);
+  }
 
+    @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String newComment = getComment(request);
+      messages.add(newComment);
+      response.sendRedirect("/index.html");
+  }
+
+  private String getComment(HttpServletRequest request) {
+      String new_comment = request.getParameter("comment");
+      return new_comment;
   }
 
   private String convertToJsonUsingGson(List<String> messages) {

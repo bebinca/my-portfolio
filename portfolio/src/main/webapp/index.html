@@ -12,7 +12,7 @@
         }
     </style>
   </head>
-  <body>
+  <body onload="getMessages()">
     <div id="content">
       <h1 style = "font-family:Oswald-Regular;font-size:300%;">YuanTian's Portfolio.</h1>
       <p>🏫 Sophomore; Zhejiang University CKC & CS Academy</p>
@@ -20,12 +20,17 @@
       <p>Click here to get a random message about my favorites:</p>
       <button onclick="addRandomGreeting()">Click for Fun?</button>
       <div id="greeting-container"></div>
-      <p>And click here to get a message!</p>
-      <button onClick = "getMessages()">Hello?</button>
-      <div id = "messages-container"></div>
+      
       <h2 style = "font-family:Oswald-Regular;">About</h2>
       <p>Showing myself straight here seems a little weird for me. But if you have any interest..</p>
       <p>You can try <a href="impression.html">this</a> to get an impression.</p>
+      <h2 style = "font-family:Oswald-Regular;">Leave a comment here?</h2>
+      <ul id = "messages-container" ></ul>
+      <form action="/data" method="POST">
+          <input type = "text" name = "comment" >
+          <br/><br/>
+          <input type = "submit" />
+      </form>
     </div>
   </body>
 </html>

@@ -27,20 +27,13 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-
-function getHelloUsingArrowFunctions() {
-  fetch('/data').then(response => response.text()).then((hello) => {
-    document.getElementById('hello-container').innerText = hello;
-  });
-}
-
 function getMessages() {
     fetch('/data').then(response => response.json()).then((stats) => {
         console.log(stats.messages);
         const statsListElement = document.getElementById('messages-container');
-        statsListElement.innerHTML = '';
-        statsListElement.appendChild(
-        createListElement(stats));
+        stats.forEach((line) => {
+            statsListElement.appendChild(createListElement(line));
+        });
     });
 }
 
