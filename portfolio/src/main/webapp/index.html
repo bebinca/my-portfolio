@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>YuanTian's Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0w9xaEGXNTZczdhcTdeLAwt80fMi-KvU"></script>
     <script src="script.js"></script>
     <style>
         @font-face {
@@ -12,7 +13,7 @@
         }
     </style>
   </head>
-  <body onload="getMessages()">
+  <body onload="getMessages();createMap();">
     <div id="content">
       <h1 style = "font-family:Oswald-Regular;font-size:300%;">YuanTian's Portfolio.</h1>
       <p>🏫 Sophomore; Zhejiang University CKC & CS Academy</p>
@@ -31,6 +32,8 @@
           <br/><br/>
           <input type = "submit" />
       </form>
+      <h2 style = "font-family:Oswald-Regular;">Google Map</h2>
+      <div id="map"></div>
     </div>
   </body>
 </html>
