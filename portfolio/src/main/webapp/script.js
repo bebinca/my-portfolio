@@ -12,29 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['Fullmetal Alchemist', 'Sodagreen', 'HΔG', 'Demons','Coldplay','Aimer','KOKIA','GEM'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById("greeting-container");
-  greetingContainer.innerText = greeting;
-}
-
-function getMessages() {
-    fetch('/data').then(response => response.json()).then((stats) => {
-        console.log(stats.messages);
-        const statsListElement = document.getElementById('messages-container');
-        stats.forEach((line) => {
-            statsListElement.appendChild(createListElement(line));
-        });
+function getComments() {
+  fetch('/data').then(response => response.json()).then((stats) => {
+    console.log(stats.comments);
+    const statsListElement = document.getElementById('comments-container');
+    stats.forEach((line) => {
+      statsListElement.appendChild(createListElement(line));
     });
+  }); 
 }
 
 function createListElement(text) {
@@ -48,4 +33,3 @@ function createMap() {
       document.getElementById('map'),
       {center: {lat: 37.422, lng: -122.084}, zoom: 16});
 }
-

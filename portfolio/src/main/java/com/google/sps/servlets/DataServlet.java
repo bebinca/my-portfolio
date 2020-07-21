@@ -15,7 +15,6 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,46 +36,41 @@ import com.google.appengine.api.datastore.Entity;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    private List<String> messages;
+  private List<String> comments;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    messages = new ArrayList<>();
+    comments = new ArrayList<>();
     Query query = new Query("comment").addSort("time", SortDirection.DESCENDING);;
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
         for (Entity entity : results.asIterable()) {
             String comment = (String)entity.getProperty("text");
-            messages.add(comment);
+            comments.add(comment);
         }
     response.setContentType("application/json;");
-    String json = convertToJsonUsingGson(messages);
+    String json = convertToJsonUsingGson(comments);
     response.getWriter().println(json);
   }
 
-    @Override
+  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String newComment = getComment(request);
-      long timestamp = System.currentTimeMillis();
+    String newComment = request.getParameter("comment");
+    long timestamp = System.currentTimeMillis();
 
-      Entity commentEntity = new Entity("comment");
-      commentEntity.setProperty("text",newComment);
-      commentEntity.setProperty("time", timestamp);
+    Entity commentEntity = new Entity("comment");
+    commentEntity.setProperty("text", newComment);
+    commentEntity.setProperty("time", timestamp);
 
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(commentEntity);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
 
-      response.sendRedirect("/index.html");
+    response.sendRedirect("/index.html");
   }
 
-  private String getComment(HttpServletRequest request) {
-      String new_comment = request.getParameter("comment");
-      return new_comment;
-  }
-
-  private String convertToJsonUsingGson(List<String> messages) {
+  private String convertToJsonUsingGson(List<String> comments) {
     Gson gson = new Gson();
-    String json = gson.toJson(messages);
+    String json = gson.toJson(comments);
     return json;
   }
 }
