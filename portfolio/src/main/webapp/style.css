@@ -63,11 +63,11 @@ body {
 }
 
 #basic_words {
-    position:absolute;
-    top:180px;
-    font-size: 30px;
-    text-align: center;
-    width:100%;
+  position:absolute;
+  top:180px;
+  font-size: 30px;
+  text-align: center;
+  width:100%;
 }
 
 h1 {

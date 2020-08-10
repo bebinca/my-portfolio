@@ -44,10 +44,10 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("comment").addSort("time", SortDirection.DESCENDING);;
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-        for (Entity entity : results.asIterable()) {
-            String comment = (String)entity.getProperty("text");
-            comments.add(comment);
-        }
+      for (Entity entity : results.asIterable()) {
+        String comment = (String)entity.getProperty("text");
+        comments.add(comment);
+      }
     response.setContentType("application/json;");
     String json = convertToJsonUsingGson(comments);
     response.getWriter().println(json);
